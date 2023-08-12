@@ -35,7 +35,7 @@ And/or Sync methods
   - `sizeSync()`
   - `keySync(index: number)` - returns the name of the key by its index
   
-[Example on GitHub](https://github.com/vglinka/storage-facade/tree/main/examples/interface)
+[Example on GitHub](https://github.com/vglinka/storage-facade/blob/main/examples/interface.ts)
 
 Implementing these methods will allow you to save and load values
 from storage in a convenient way, shown below.
@@ -355,7 +355,7 @@ import { createStorage, keyIsNotBanned } from 'storage-facade';
 import { MockInterface } from '...another lib...';
 
 const storage = createStorage({
-  use: new MockInterface(), // Here is your interface
+  use: new MockInterface(),
   asyncMode: false,
 });
 
