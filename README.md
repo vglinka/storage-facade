@@ -337,8 +337,8 @@ try {
 
 ## Use only first level keys
 
-Only first-level keys (like `storage.a = ...`, but not `storage.a[0] = ...`
-or `storage.a.b = ...`) are in sync with the storage.
+Only first-level keys (like `storage.a =`, but not `storage.a[0] =`
+or `storage.a.b =`) are in sync with the storage.
 
 Assigning keys of the second or more levels will not give any effect.
 
@@ -358,7 +358,6 @@ const storage = createStorage({
   use: new MockInterface(),
   asyncMode: false,
 });
-
 
 try {
   const myNewKey = 'newKey';
