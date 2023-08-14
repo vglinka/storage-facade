@@ -181,7 +181,7 @@ import { MockInterface } from '...another lib...';
     return [key, value];
   });
 
-  console.log(await Promise.all(array))
+  console.log(await Promise.all(array));
   /*
     [
       ['value', 4],
@@ -213,7 +213,7 @@ try {
       return [key, value];
     });
 
-  console.log(array)
+  console.log(array);
   /*
     [
       ['value', 4],
