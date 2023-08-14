@@ -35,12 +35,18 @@ And/or Sync methods
   - `sizeSync()`
   - `keySync(index: number)` - returns the name of the key by its index
   
-[Example on GitHub](https://github.com/vglinka/storage-facade/blob/main/examples/interface.ts)
+Example: [MockInterface](https://github.com/vglinka/storage-facade/blob/main/examples/interface.ts)
 
 Implementing these methods will allow you to save and load values
 from storage in a convenient way, shown below.
 
 In addition, iteration over entries is available.
+
+## Libraries using the Storage facade
+
+### localStorage
+
+- [storage-facade-localstorage](https://www.npmjs.com/package/storage-facade-localstorage) - An simple way to store data in localStorage. Supports caching.
 
 ## Installation
 
@@ -88,6 +94,7 @@ import { MockInterface } from '...another lib...';
 (async () => {
   const storage = createStorage({
     use: new MockInterface(), // Here is your interface
+    name: 'settings', // Storage name, optional
   });
 
   // Make sure the storage was initialized without error
@@ -123,6 +130,7 @@ import { MockInterface } from '...another lib...';
 
 const storage = createStorage({
   use: new MockInterface(), // Here is your interface
+  name: 'settings', // Storage name, optional
   asyncMode: false,
   //         ^^^^^
 });
@@ -287,7 +295,6 @@ const storage = createStorage({
   asyncMode: false,
 });
 
-
 try {
   console.log(storage.value) // undefined
 
@@ -342,6 +349,35 @@ or `storage.a.b =`) are in sync with the storage.
 
 Assigning keys of the second or more levels will not give any effect.
 
+```TypeScript
+  // Don't do that
+  storage.value.user.data = 42; // no effect
+```
+
+Instead, use the following approach:
+
+```TypeScript
+  // Get object
+  const updatedValue = storage.value;
+  // Modify the inner content of an object
+  updatedValue.user.data = 42;
+  // Update storage
+  storage.value = updatedValue; // Ок
+```
+
+async:
+
+```TypeScript
+  // Get object
+  const updatedValue = await storage.value;
+  // Modify the inner content of an object
+  updatedValue.user.data = 42;
+  // Update storage
+  storage.value = updatedValue; 
+  await storage.value // Ок
+```
+
+
 ## Don't use banned key names
 
 There is a list of key names that cannot be used because they are the same
@@ -373,9 +409,11 @@ try {
 
 Only values of type `string` can be used as keys.
 
-## Values for `...Default` methods should be of any structured-cloneable type
+## Values for `...Default` methods
 
-This can be any [structured-cloneable type (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm#supported_types). 
+Values for [`addDefault`, `setDefault`] methods
+should be of any [structured-cloneable type (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm#supported_types). 
+
 
 
 

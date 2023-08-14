@@ -14,6 +14,7 @@ import { ErrorOnWrite } from '../mock/errorOnWrite';
 it('Async: read/write', async () => {
   const storage = createStorage({
     use: new MockInterface(),
+    name: 'settings',
   });
 
   await storage.open();
@@ -24,6 +25,52 @@ it('Async: read/write', async () => {
   expect(await storage.value).toEqual({ c: [40, 42] });
 
   expect(getMockStorage(storage).get('value')).toEqual({ c: [40, 42] });
+});
+
+it(`Async: case-sensitive`, async () => {
+  const storage = createStorage({
+    use: new MockInterface(),
+  });
+
+  storage.value = 20;
+  await storage.value;
+  expect(await storage.Value).toEqual(undefined);
+  //                   ^
+
+  storage.Value = 30;
+  //      ^
+  await storage.value;
+  expect(await storage.value).toEqual(20);
+});
+
+it(`Async: ref problem (need structuredClone)`, async () => {
+  const storage = createStorage({
+    use: new MockInterface(),
+  });
+
+  // set value
+  const a = { c: [40, 42] };
+  storage.value = a;
+  await storage.value;
+  a.c = [30];
+  expect(await storage.value).toEqual({ c: [40, 42] });
+
+  // get value
+  const b = await storage.value;
+  (b as Record<string, unknown>).c = [40];
+  expect(await storage.value).toEqual({ c: [40, 42] });
+
+  // Test new session
+  const newStorage = createStorage({
+    use: new MockInterface(),
+  });
+
+  // get value
+  const t = await newStorage.value;
+  if (t !== undefined) {
+    (t as Record<string, unknown>).c = [90];
+    expect(await newStorage.value).toEqual({ c: [40, 42] });
+  }
 });
 
 it('Async: addDefault', async () => {

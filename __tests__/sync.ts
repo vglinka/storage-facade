@@ -14,6 +14,7 @@ import { ErrorOnWrite } from '../mock/errorOnWrite';
 it('Sync: read/write', () => {
   const storage = createStorage({
     use: new MockInterface(),
+    name: 'settings',
     asyncMode: false,
   });
 
@@ -21,6 +22,52 @@ it('Sync: read/write', () => {
   expect(storage.value).toEqual({ c: [40, 42] });
 
   expect(getMockStorage(storage).get('value')).toEqual({ c: [40, 42] });
+});
+
+it(`Sync: case-sensitive`, () => {
+  const storage = createStorage({
+    use: new MockInterface(),
+    asyncMode: false,
+  });
+
+  storage.value = 20;
+  expect(storage.Value).toEqual(undefined);
+  //             ^
+
+  storage.Value = 30;
+  //      ^
+  expect(storage.value).toEqual(20);
+});
+
+it(`Sync: ref problem (need structuredClone)`, () => {
+  const storage = createStorage({
+    use: new MockInterface(),
+    asyncMode: false,
+  });
+
+  // set value
+  const a = { c: [40, 42] };
+  storage.value = a;
+  a.c = [30];
+  expect(storage.value).toEqual({ c: [40, 42] });
+
+  // get value
+  const b = storage.value;
+  (b as Record<string, unknown>).c = [40];
+  expect(storage.value).toEqual({ c: [40, 42] });
+
+  // Test new session
+  const newStorage = createStorage({
+    use: new MockInterface(),
+    asyncMode: false,
+  });
+
+  // get value
+  const t = newStorage.value;
+  if (t !== undefined) {
+    (t as Record<string, unknown>).c = [90];
+    expect(newStorage.value).toEqual({ c: [40, 42] });
+  }
 });
 
 it('Sync: addDefault', () => {
