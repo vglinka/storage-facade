@@ -1,6 +1,6 @@
 {
   "name": "storage-facade",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An simple way to store data in localStorage / IndexedDB / ...",
   "author": "Vadim Glinka <vadgit@yandex.com>",
   "license": "(MIT OR Apache-2.0)",
@@ -22,7 +22,7 @@
     "localstorage",
     "promise"
   ],
-  "browser": "./build/index.js",
+  "main": "./build/index.js",
   "type": "module",
   "types": "./build/storage-facade.d.ts",
    "exports": {
