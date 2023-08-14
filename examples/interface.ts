@@ -77,7 +77,7 @@ export class MockInterface extends StorageInterface {
 
   async getItemAsync(key: string): Promise<unknown> {
     return wait({
-      resolve: { data: this.storage.get(key) },
+      resolve: { data: structuredClone(this.storage.get(key)) },
     });
   }
 
@@ -85,7 +85,7 @@ export class MockInterface extends StorageInterface {
     return wait({
       resolve: { data: undefined },
       action: () => {
-        this.storage.set(key, value);
+        this.storage.set(key, structuredClone(value));
       },
     }) as Promise<undefined>;
   }
@@ -127,11 +127,11 @@ export class MockInterface extends StorageInterface {
   }
 
   getItemSync(key: string): unknown {
-    return this.storage.get(key);
+    return structuredClone(this.storage.get(key));
   }
 
   setItemSync(key: string, value: unknown): void {
-    this.storage.set(key, value);
+    this.storage.set(key, structuredClone(value));
   }
 
   removeItemSync(key: string): void {
