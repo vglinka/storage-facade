@@ -48,16 +48,21 @@ In addition, iteration over entries is available.
 
 - [storage-facade-localstorage](https://www.npmjs.com/package/storage-facade-localstorage) - An simple way to store data in localStorage. Supports caching.
 
+### sessionStorage
+
+- [storage-facade-sessionstorage](https://www.npmjs.com/package/storage-facade-sessionstorage) - An simple way to store data in sessionStorage. Supports caching.
+
+### MockInterface
+
+- [storage-facade-mockinterface](https://www.npmjs.com/package/storage-facade-mockinterface) - MockInterface for Storage facade.
+
 ## Installation
 
 ```sh
-npm install storage-facade
+npm install storage-facade storage-facade-mockinterface
 ```
 
 # Usage
-
-The `StorageFacade` has `6` storage-related methods
-and `4` methods for interacting with default values.
 
 ## Storage methods
 
@@ -89,7 +94,7 @@ Therefore, all these methods are synchronous (no need to use the `await` keyword
 
 ```TypeScript
 import { createStorage } from 'storage-facade';
-import { MockInterface } from '...another lib...';
+import { MockInterface } from 'storage-facade-mockinterface';
 
 (async () => {
   const storage = createStorage({
@@ -126,7 +131,7 @@ import { MockInterface } from '...another lib...';
   
 ```TypeScript
 import { createStorage } from 'storage-facade';
-import { MockInterface } from '...another lib...';
+import { MockInterface } from 'storage-facade-mockinterface';
 
 const storage = createStorage({
   use: new MockInterface(), // Here is your interface
@@ -158,7 +163,7 @@ try {
 
 ```TypeScript
 import { createStorage } from 'storage-facade';
-import { MockInterface } from '...another lib...';
+import { MockInterface } from 'storage-facade-mockinterface';
 
 (async () => {
   const storage = createStorage({
@@ -195,7 +200,7 @@ import { MockInterface } from '...another lib...';
 
 ```TypeScript
 import { createStorage } from 'storage-facade';
-import { MockInterface } from '...another lib...';
+import { MockInterface } from 'storage-facade-mockinterface';
 
 const storage = createStorage({
   use: new MockInterface(),
@@ -229,7 +234,7 @@ try {
 
 ```TypeScript
 import { createStorage } from 'storage-facade';
-import { MockInterface } from '...another lib...';
+import { MockInterface } from 'storage-facade-mockinterface';
 
 (async () => {
   const storage = createStorage({
@@ -288,7 +293,7 @@ import { MockInterface } from '...another lib...';
 
 ```TypeScript
 import { createStorage } from 'storage-facade';
-import { MockInterface } from '...another lib...';
+import { MockInterface } from 'storage-facade-mockinterface';
 
 const storage = createStorage({
   use: new MockInterface(),
@@ -388,7 +393,7 @@ Use the `keyIsNotBanned` function to check the key if needed.
 
 ```TypeScript
 import { createStorage, keyIsNotBanned } from 'storage-facade';
-import { MockInterface } from '...another lib...';
+import { MockInterface } from 'storage-facade-mockinterface';
 
 const storage = createStorage({
   use: new MockInterface(),
