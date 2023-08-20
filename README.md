@@ -56,6 +56,10 @@ In addition, iteration over entries is available.
 
 - [storage-facade-mockinterface](https://www.npmjs.com/package/storage-facade-mockinterface) - MockInterface for Storage facade.
 
+### MapInterface
+
+- [storage-facade-map](https://www.npmjs.com/package/storage-facade-map) - Just a wrapper for [Map (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
+
 ## Installation
 
 ```sh

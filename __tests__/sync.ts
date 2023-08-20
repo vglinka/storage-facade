@@ -39,6 +39,37 @@ it(`Sync: case-sensitive`, () => {
   expect(storage.value).toEqual(20);
 });
 
+it('Sync: different names', () => {
+  const storage = createStorage({
+    use: new MockInterface(),
+    asyncMode: false,
+    name: 'settings',
+  });
+
+  storage.value = 10;
+
+  expect(storage.value).toEqual(10);
+
+  const storage2 = createStorage({
+    use: new MockInterface(),
+    asyncMode: false,
+    name: 'settings2',
+  });
+
+  expect(storage.value).toEqual(10);
+  expect(storage2.value).toEqual(undefined);
+
+  storage2.value = 20;
+
+  expect(storage.value).toEqual(10);
+  expect(storage2.value).toEqual(20);
+
+  storage.clear();
+
+  expect(storage.value).toEqual(undefined);
+  expect(storage2.value).toEqual(20);
+});
+
 it(`Sync: ref problem (need structuredClone)`, () => {
   const storage = createStorage({
     use: new MockInterface(),
