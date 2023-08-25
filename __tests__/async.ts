@@ -23,7 +23,6 @@ it('Async: read/write', async () => {
   await storage.value;
 
   expect(((await storage.value) as Record<string, unknown>).c).toEqual([40, 42]);
-
   expect(getMockStorage(storage).get('value')).toEqual({ c: [40, 42] });
 });
 
