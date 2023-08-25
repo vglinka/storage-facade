@@ -66,7 +66,7 @@ export class MockInterface extends StorageInterface {
   // Async
   async initAsync<T extends StorageInterface>(
     setup: Setup<T>
-  ): Promise<undefined | Error> {
+  ): Promise<Error | undefined> {
     return wait({
       resolve: { data: undefined },
       action: () => {
@@ -75,49 +75,49 @@ export class MockInterface extends StorageInterface {
     }) as Promise<Error | undefined>;
   }
 
-  async getItemAsync(key: string): Promise<unknown> {
+  async getItemAsync(key: string): Promise<Error | unknown> {
     return wait({
       resolve: { data: structuredClone(this.storage.get(key)) },
     });
   }
 
-  async setItemAsync(key: string, value: unknown): Promise<undefined> {
+  async setItemAsync(key: string, value: unknown): Promise<Error | undefined> {
     return wait({
       resolve: { data: undefined },
       action: () => {
         this.storage.set(key, structuredClone(value));
       },
-    }) as Promise<undefined>;
+    }) as Promise<Error | undefined>;
   }
 
-  async removeItemAsync(key: string): Promise<undefined> {
+  async removeItemAsync(key: string): Promise<Error | undefined> {
     return wait({
       resolve: { data: undefined },
       action: () => {
         this.storage.delete(key);
       },
-    }) as Promise<undefined>;
+    }) as Promise<Error | undefined>;
   }
 
-  async clearAsync(): Promise<undefined> {
+  async clearAsync(): Promise<Error | undefined> {
     return wait({
       resolve: { data: undefined },
       action: () => {
         this.storage.clear();
       },
-    }) as Promise<undefined>;
+    }) as Promise<Error | undefined>;
   }
 
-  async sizeAsync(): Promise<number> {
+  async sizeAsync(): Promise<Error | number> {
     return wait({
       resolve: { data: this.storage.size },
     }) as Promise<number>;
   }
 
-  async keyAsync(index: number): Promise<string> {
+  async keyAsync(index: number): Promise<Error | string | undefined> {
     return wait({
       resolve: { data: Array.from(this.storage)[index][0] },
-    }) as Promise<string>;
+    }) as Promise<Error | string | undefined>;
   }
 
   // Sync

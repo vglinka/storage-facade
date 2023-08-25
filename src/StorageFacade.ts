@@ -22,10 +22,10 @@ export interface StorageFacade {
   [key: string]: unknown;
   // Storage methods
   [openMethod]: () => Promise<Error | undefined>;
-  [clearMethod]: () => Promise<undefined> | unknown;
-  [sizeMethod]: () => Promise<number> | number;
-  [keyMethod]: (index: number) => Promise<string> | string;
-  [iterAsyncMethod]: () => Promise<Array<Promise<[string, unknown]>>>;
+  [clearMethod]: () => Promise<Error | undefined> | unknown;
+  [sizeMethod]: () => Promise<Error | number> | number;
+  [keyMethod]: (index: number) => Promise<Error | string | undefined> | string;
+  [iterAsyncMethod]: () => Promise<Array<Promise<[string | undefined, unknown]>>>;
   [iterSyncMethod]: () => Array<[string, unknown]>;
   // '...Default' methods
   [addDefaultMethod]: (obj: Record<string, unknown>) => void;

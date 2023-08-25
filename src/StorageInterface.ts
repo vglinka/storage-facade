@@ -19,9 +19,13 @@ export abstract class StorageInterface {
 
   abstract storageName: string;
 
-  notImplementedError(methodName: string): Error {
-    const msg = `storage-facade: StorageInterface '${this.interfaceName}': '${methodName}' is not implemented!`;
+  interfaceError(problem: string): Error {
+    const msg = `storage-facade: StorageInterface '${this.interfaceName}': ${problem}`;
     return new Error(msg);
+  }
+
+  notImplementedError(methodName: string): Error {
+    return this.interfaceError(`'${methodName}' is not implemented!`);
   }
 
   // Async
@@ -31,27 +35,27 @@ export abstract class StorageInterface {
     return Promise.reject(this.notImplementedError('initAsync'));
   }
 
-  async getItemAsync(key: string): Promise<unknown> {
+  async getItemAsync(key: string): Promise<Error | unknown> {
     throw this.notImplementedError('getItemAsync');
   }
 
-  async setItemAsync(key: string, value: unknown): Promise<undefined> {
+  async setItemAsync(key: string, value: unknown): Promise<Error | undefined> {
     throw this.notImplementedError('setItemAsync');
   }
 
-  async removeItemAsync(key: string): Promise<undefined> {
+  async removeItemAsync(key: string): Promise<Error | undefined> {
     throw this.notImplementedError('removeItemAsync');
   }
 
-  async clearAsync(): Promise<undefined> {
+  async clearAsync(): Promise<Error | undefined> {
     throw this.notImplementedError('clearAsync');
   }
 
-  async sizeAsync(): Promise<number> {
+  async sizeAsync(): Promise<Error | number> {
     throw this.notImplementedError('sizeAsync');
   }
 
-  async keyAsync(index: number): Promise<string> {
+  async keyAsync(index: number): Promise<Error | string | undefined> {
     throw this.notImplementedError('keyAsync');
   }
 

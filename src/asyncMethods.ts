@@ -26,7 +26,7 @@ export const asyncMethods = <T extends StorageInterface>(
     // Storage
     [openMethod]: {
       configurable: false,
-      get(): () => Promise<unknown> {
+      get(): () => Promise<Error | undefined> {
         return async () => {
           const base = Object.getPrototypeOf(self) as Base<T>;
           return base.init;
@@ -36,7 +36,7 @@ export const asyncMethods = <T extends StorageInterface>(
 
     [clearMethod]: {
       configurable: false,
-      get(): () => Promise<unknown> {
+      get(): () => Promise<Error | undefined> {
         return async () => {
           const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
           return storageInterface.clearAsync();
@@ -46,7 +46,7 @@ export const asyncMethods = <T extends StorageInterface>(
 
     [sizeMethod]: {
       configurable: false,
-      get(): () => Promise<number | Error> {
+      get(): () => Promise<Error | number> {
         return async () => {
           const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
           return storageInterface.sizeAsync();
@@ -56,7 +56,7 @@ export const asyncMethods = <T extends StorageInterface>(
 
     [keyMethod]: {
       configurable: false,
-      get(): (index: number) => Promise<string | Error> {
+      get(): (index: number) => Promise<Error | string | undefined> {
         return async (index: number) => {
           const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
           return storageInterface.keyAsync(index);
@@ -66,17 +66,21 @@ export const asyncMethods = <T extends StorageInterface>(
 
     [iterAsyncMethod]: {
       configurable: false,
-      get(): () => Promise<Array<Promise<[string, unknown]>>> {
+      get(): () => Promise<Array<Promise<[string | undefined, unknown]>>> {
         return async () => {
           const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
           const size = await storageInterface.sizeAsync();
-          return Array(size)
+          if (size === 0) return [] as Array<Promise<[string | undefined, unknown]>>;
+          return Array(size as number)
             .fill(undefined)
             .map(async (_, index) => {
               const key = await storageInterface.keyAsync(index);
-              const value = await storageInterface.getItemAsync(key);
+              const value =
+                key === undefined
+                  ? undefined
+                  : await storageInterface.getItemAsync(key as string);
               return [key, value];
-            }) as Array<Promise<[string, unknown]>>;
+            }) as Array<Promise<[string | undefined, unknown]>>;
         };
       },
     },

@@ -13,10 +13,10 @@
 import { MockInterface, wait } from './mockInterface';
 
 export class ErrorOnWrite extends MockInterface {
-  async setItemAsync(key: string, value: unknown): Promise<undefined> {
+  async setItemAsync(key: string, value: unknown): Promise<Error | undefined> {
     return wait({
       reject: { data: Error('Error on write') },
-    }) as Promise<undefined>;
+    }) as Promise<Error | undefined>;
   }
 
   setItemSync(key: string, value: unknown): void {

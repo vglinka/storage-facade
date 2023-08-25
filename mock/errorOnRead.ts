@@ -13,7 +13,7 @@
 import { MockInterface, wait } from './mockInterface';
 
 export class ErrorOnRead extends MockInterface {
-  async getItemAsync(key: string): Promise<unknown> {
+  async getItemAsync(key: string): Promise<Error | unknown> {
     return wait({
       reject: { data: Error('Error on read') },
     }) as Promise<Error | undefined>;

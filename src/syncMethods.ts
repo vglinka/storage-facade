@@ -59,14 +59,17 @@ export const syncMethods = <T extends StorageInterface>(
         return () => {
           const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
           const size = storageInterface.sizeSync();
-          const result = [];
+          const result: Array<[string, unknown]> = [];
+          if (size === 0) return result;
           let currentIndex = 0;
           let key: string;
           let value;
           while (currentIndex < size) {
             key = storageInterface.keySync(currentIndex);
-            value = storageInterface.getItemSync(key);
-            result.push([key, value] as [string, unknown]);
+            if (key !== undefined) {
+              value = storageInterface.getItemSync(key);
+              result.push([key, value] as [string, unknown]);
+            }
             currentIndex += 1;
           }
           return result;
