@@ -6,7 +6,7 @@
 // option.
 
 import { type Base } from './Base';
-import { type StorageInterface } from './StorageInterface';
+import { type StorageInterface, type Ok } from './StorageInterface';
 import {
   openMethod,
   clearMethod,
@@ -26,17 +26,17 @@ export const asyncMethods = <T extends StorageInterface>(
     // Storage
     [openMethod]: {
       configurable: false,
-      get(): () => Promise<Error | undefined> {
+      get(): () => Promise<Error | Ok> {
         return async () => {
           const base = Object.getPrototypeOf(self) as Base<T>;
-          return base.init;
+          return base.init as Promise<Error | Ok>;
         };
       },
     },
 
     [clearMethod]: {
       configurable: false,
-      get(): () => Promise<Error | undefined> {
+      get(): () => Promise<Error | Ok> {
         return async () => {
           const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
           return storageInterface.clearAsync();
@@ -80,7 +80,11 @@ export const asyncMethods = <T extends StorageInterface>(
                   ? undefined
                   : await storageInterface.getItemAsync(key as string);
               return [key, value];
-            }) as Array<Promise<[string | undefined, unknown]>>;
+            })
+            .filter(async (kv) => {
+              const [key] = await kv;
+              return key !== undefined;
+            }) as Array<Promise<[string, unknown]>>;
         };
       },
     },

@@ -11,18 +11,16 @@
 */
 
 import { MockInterface, wait } from './mockInterface';
-import { type StorageInterface, type Setup } from '../src/StorageInterface';
+import { type StorageInterface, type Setup, type Ok } from '../src/StorageInterface';
 
 export class ErrorOnInit extends MockInterface {
-  initSync<T extends StorageInterface>(setup: Setup<T>): Error | undefined {
+  initSync<T extends StorageInterface>(setup: Setup<T>): Error | Ok {
     return Error('Error on init');
   }
 
-  async initAsync<T extends StorageInterface>(
-    setup: Setup<T>
-  ): Promise<Error | undefined> {
+  async initAsync<T extends StorageInterface>(setup: Setup<T>): Promise<Error | Ok> {
     return wait({
       reject: { data: Error('Error on init') },
-    }) as Promise<Error | undefined>;
+    }) as Promise<Error | Ok>;
   }
 }

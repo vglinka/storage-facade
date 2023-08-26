@@ -7,8 +7,8 @@
 
 import { Base } from './Base';
 import { type StorageFacade } from './StorageFacade';
-import { StorageInterface, type Setup } from './StorageInterface';
+import { StorageInterface, type Setup, Ok } from './StorageInterface';
 import { createStorage } from './createStorage';
 
 export * from './const';
-export { createStorage, type StorageFacade, Base, StorageInterface, type Setup };
+export { createStorage, type StorageFacade, Base, StorageInterface, type Setup, Ok };

@@ -5,7 +5,7 @@
 // <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your
 // option.
 
-import { type StorageInterface, type Setup } from './StorageInterface';
+import { type StorageInterface, type Setup, type Ok } from './StorageInterface';
 import { defaultAsyncMode } from './const';
 
 export class Base<T extends StorageInterface> {
@@ -13,7 +13,7 @@ export class Base<T extends StorageInterface> {
 
   asyncMode: boolean;
 
-  init: Promise<Error | undefined> | (Error | undefined);
+  init: Promise<Error | Ok> | (Error | Ok);
 
   default: Record<string, unknown>;
 

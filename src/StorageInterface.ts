@@ -5,13 +5,31 @@
 // <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your
 // option.
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable
+    @typescript-eslint/no-unused-vars,
+    max-classes-per-file
+*/
 
 export interface Setup<T extends StorageInterface> {
   use: T;
   name?: string;
   asyncMode?: boolean;
   [prop: string]: unknown;
+}
+
+/**
+ * This is necessary so that the user receives a type error
+ * when trying to use the value of the result of the operation,
+ * which he forgot "await"
+ *
+ * storage.value = 42;
+ *
+ * await storage.value; // The user may have forgotten this line
+ *
+ * In this case, the user will later receive not the value, but the result of the operation.
+ */
+export class Ok {
+  msg = 'storage-fasade: result of the operation: OK' as const;
 }
 
 export abstract class StorageInterface {
@@ -29,9 +47,7 @@ export abstract class StorageInterface {
   }
 
   // Async
-  async initAsync<T extends StorageInterface>(
-    setup: Setup<T>
-  ): Promise<Error | undefined> {
+  async initAsync<T extends StorageInterface>(setup: Setup<T>): Promise<Error | Ok> {
     return Promise.reject(this.notImplementedError('initAsync'));
   }
 
@@ -39,15 +55,15 @@ export abstract class StorageInterface {
     throw this.notImplementedError('getItemAsync');
   }
 
-  async setItemAsync(key: string, value: unknown): Promise<Error | undefined> {
+  async setItemAsync(key: string, value: unknown): Promise<Error | Ok> {
     throw this.notImplementedError('setItemAsync');
   }
 
-  async removeItemAsync(key: string): Promise<Error | undefined> {
+  async removeItemAsync(key: string): Promise<Error | Ok> {
     throw this.notImplementedError('removeItemAsync');
   }
 
-  async clearAsync(): Promise<Error | undefined> {
+  async clearAsync(): Promise<Error | Ok> {
     throw this.notImplementedError('clearAsync');
   }
 
@@ -60,7 +76,7 @@ export abstract class StorageInterface {
   }
 
   // Sync
-  initSync<T extends StorageInterface>(setup: Setup<T>): Error | undefined {
+  initSync<T extends StorageInterface>(setup: Setup<T>): Error | Ok {
     return this.notImplementedError('initSync');
   }
 
