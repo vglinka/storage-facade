@@ -447,7 +447,7 @@ async:
 ## Don't use banned key names
 
 There is a list of key names that cannot be used because they are the same
-as built-in method names: [`open`, `clear`, `delete`, `size`, `key`,
+as built-in method names: [`open`, `clear`, `deleteStorage`, `size`, `key`,
 `getEntries`, `entries`, `addDefault`, `setDefault`, `getDefault`, `clearDefault`].
 
 Use the `keyIsNotBanned` function to check the key if needed.
