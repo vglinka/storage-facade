@@ -15,7 +15,7 @@ export const sizeMethod = 'size';
 export const keyMethod = 'key';
 export const iterAsyncMethod = 'getEntries';
 export const iterSyncMethod = 'entries';
-export const deleteStorageMethod = 'delete';
+export const deleteStorageMethod = 'deleteStorage';
 
 // '...Default' method names
 export const addDefaultMethod = 'addDefault';

@@ -116,7 +116,7 @@ it('Async: delete storage', async () => {
   storage.value = { c: [40, 42] };
   await storage.value;
 
-  await storage.delete();
+  await storage.deleteStorage();
 
   expect(await storage.isDeleted).toEqual(true);
   expect(getMockStorage(storage).get('isDeleted')).toEqual(true);

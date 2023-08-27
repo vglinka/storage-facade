@@ -110,7 +110,7 @@ it('Sync: delete storage', () => {
 
   storage.value = { c: [40, 42] };
 
-  storage.delete();
+  storage.deleteStorage();
 
   expect(storage.isDeleted).toEqual(true);
   expect(getMockStorage(storage).get('isDeleted')).toEqual(true);

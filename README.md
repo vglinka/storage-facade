@@ -76,7 +76,7 @@ npm install storage-facade storage-facade-mockinterface
 - `.clear()` - removes all key-value pairs from the storage
 - `.getEntries()` async only, returns an array of promises to iterate
 - `.entries()` sync only, returns an array of key-value pairs
-- `.delete()` - delete storage
+- `.deleteStorage()` - delete storage
 - `.size()` - returns the number of key-value pairs
 - `.key(index: number)` - returns the name of the key by its index
 
@@ -153,7 +153,7 @@ import { MockInterface } from 'storage-facade-mockinterface';
   console.log(await storage.value); // undefined
   
   // Delete storage
-  await storage.delete();
+  await storage.deleteStorage();
 })();
 ```
 
@@ -197,7 +197,7 @@ try {
   console.log(storage.value); // undefined
   
   // Delete storage
-  storage.delete();
+  storage.deleteStorage();
 } catch (e) {
   console.error((e as Error).message);
 }
