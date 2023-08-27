@@ -6,7 +6,6 @@
 // option.
 
 import { type StorageInterface, type Setup, type Ok } from './StorageInterface';
-import { defaultAsyncMode } from './const';
 
 export class Base<T extends StorageInterface> {
   storageInterface: T;
@@ -25,8 +24,8 @@ export class Base<T extends StorageInterface> {
   [prop: string]: unknown;
 
   constructor(setup: Setup<T>) {
-    this.asyncMode = setup.asyncMode ?? defaultAsyncMode;
     this.storageInterface = setup.use;
+    this.asyncMode = setup.asyncMode ?? this.storageInterface.defaultAsyncMode();
     this.default = Object.create(null) as Record<string, unknown>;
 
     if (this.asyncMode) {

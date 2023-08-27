@@ -7,8 +7,11 @@
 
 /* eslint-disable
     @typescript-eslint/no-unused-vars,
-    max-classes-per-file
+    max-classes-per-file,
+    class-methods-use-this
 */
+
+import { defaultAsyncMode } from './const';
 
 export interface Setup<T extends StorageInterface> {
   use: T;
@@ -44,6 +47,10 @@ export abstract class StorageInterface {
 
   notImplementedError(methodName: string): Error {
     return this.interfaceError(`'${methodName}' is not implemented!`);
+  }
+
+  defaultAsyncMode(): boolean {
+    return defaultAsyncMode;
   }
 
   // Async
