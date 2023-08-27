@@ -12,7 +12,6 @@ import { syncMethods } from './syncMethods';
 import { type StorageFacade } from './StorageFacade';
 import { type Setup, type StorageInterface } from './StorageInterface';
 import { Base } from './Base';
-import { defaultAsyncMode } from './const';
 import { asyncOuterHandler } from './asyncOuterHandler';
 import { syncOuterHandler } from './syncOuterHandler';
 
@@ -40,7 +39,10 @@ import { syncOuterHandler } from './syncOuterHandler';
 export const createStorage = <T extends StorageInterface>(
   setup: Setup<T>
 ): StorageFacade => {
+  const storageInterface = setup.use;
+  const defaultAsyncMode = storageInterface.defaultAsyncMode();
   const asyncMode = setup.asyncMode ?? defaultAsyncMode;
+
   const innerHandler = asyncMode ? asyncInnerHandler : syncInnerHandler;
   const innerProxy = new Proxy(new Base(setup), innerHandler);
 
