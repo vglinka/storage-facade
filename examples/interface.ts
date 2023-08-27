@@ -63,63 +63,6 @@ export class MockInterface extends StorageInterface {
   // Since it's just a mock, we'll just store the data in a `Map`
   storage = new Map<string, unknown>();
 
-  // Async
-  async initAsync<T extends StorageInterface>(
-    setup: Setup<T>
-  ): Promise<Error | Ok> {
-    return wait({
-      resolve: { data: new Ok() },
-      action: () => {
-        this.storageName = setup.name ?? defaultStorageName;
-      },
-    }) as Promise<Error | Ok>;
-  }
-
-  async getItemAsync(key: string): Promise<Error | unknown> {
-    return wait({
-      resolve: { data: structuredClone(this.storage.get(key)) },
-    });
-  }
-
-  async setItemAsync(key: string, value: unknown): Promise<Error | Ok> {
-    return wait({
-      resolve: { data: new Ok() },
-      action: () => {
-        this.storage.set(key, structuredClone(value));
-      },
-    }) as Promise<Error | Ok>;
-  }
-
-  async removeItemAsync(key: string): Promise<Error | Ok> {
-    return wait({
-      resolve: { data: new Ok() },
-      action: () => {
-        this.storage.delete(key);
-      },
-    }) as Promise<Error | Ok>;
-  }
-
-  async clearAsync(): Promise<Error | Ok> {
-    return wait({
-      resolve: { data: new Ok() },
-      action: () => {
-        this.storage.clear();
-      },
-    }) as Promise<Error | Ok>;
-  }
-
-  async sizeAsync(): Promise<Error | number> {
-    return wait({
-      resolve: { data: this.storage.size },
-    }) as Promise<number>;
-  }
-
-  async keyAsync(index: number): Promise<Error | string | undefined> {
-    return wait({
-      resolve: { data: Array.from(this.storage)[index][0] },
-    }) as Promise<Error | string | undefined>;
-  }
-
   // Sync
   initSync<T extends StorageInterface>(setup: Setup<T>): Error | Ok {
     this.storageName = setup.name ?? defaultStorageName;
@@ -148,5 +91,81 @@ export class MockInterface extends StorageInterface {
 
   keySync(index: number): string {
     return Array.from(this.storage)[index][0];
+  }
+
+  deleteStorageSync(): void {
+    // There should be logic for deleting real storage
+    this.storage.clear();
+    // for tests
+    this.storage.set('isDeleted', true);
+  }
+
+  // Async
+  async initAsync<T extends StorageInterface>(
+    setup: Setup<T>
+  ): Promise<Error | Ok> {
+    return wait({
+      action: () => {
+        this.storageName = setup.name ?? defaultStorageName;
+      },
+      resolve: { data: new Ok() },
+    }) as Promise<Error | Ok>;
+  }
+
+  async getItemAsync(key: string): Promise<Error | unknown> {
+    return wait({
+      resolve: { data: structuredClone(this.storage.get(key)) },
+    });
+  }
+
+  async setItemAsync(key: string, value: unknown): Promise<Error | Ok> {
+    return wait({
+      action: () => {
+        this.storage.set(key, structuredClone(value));
+      },
+      resolve: { data: new Ok() },
+    }) as Promise<Error | Ok>;
+  }
+
+  async removeItemAsync(key: string): Promise<Error | Ok> {
+    return wait({
+      action: () => {
+        this.storage.delete(key);
+      },
+      resolve: { data: new Ok() },
+    }) as Promise<Error | Ok>;
+  }
+
+  async clearAsync(): Promise<Error | Ok> {
+    return wait({
+      action: () => {
+        this.storage.clear();
+      },
+      resolve: { data: new Ok() },
+    }) as Promise<Error | Ok>;
+  }
+
+  async sizeAsync(): Promise<Error | number> {
+    return wait({
+      resolve: { data: this.storage.size },
+    }) as Promise<number>;
+  }
+
+  async keyAsync(index: number): Promise<Error | string | undefined> {
+    return wait({
+      resolve: { data: Array.from(this.storage)[index][0] },
+    }) as Promise<Error | string | undefined>;
+  }
+
+  async deleteStorageAsync(): Promise<Error | Ok> {
+    return wait({
+      action: () => {
+        // There should be logic for deleting real storage
+        this.storage.clear();
+        // for tests
+        this.storage.set('isDeleted', true);
+      },
+      resolve: { data: new Ok() },
+    }) as Promise<Ok>;
   }
 }

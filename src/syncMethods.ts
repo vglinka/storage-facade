@@ -16,6 +16,7 @@ import {
   getDefaultMethod,
   setDefaultMethod,
   clearDefaultMethod,
+  deleteStorageMethod,
 } from './const';
 
 export const syncMethods = <T extends StorageInterface>(
@@ -73,6 +74,16 @@ export const syncMethods = <T extends StorageInterface>(
             currentIndex += 1;
           }
           return result;
+        };
+      },
+    },
+
+    [deleteStorageMethod]: {
+      configurable: false,
+      get(): () => void {
+        return () => {
+          const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
+          storageInterface.deleteStorageSync();
         };
       },
     },

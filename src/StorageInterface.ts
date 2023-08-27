@@ -82,6 +82,10 @@ export abstract class StorageInterface {
     throw this.notImplementedError('keyAsync');
   }
 
+  async deleteStorageAsync(): Promise<Error | Ok> {
+    throw this.notImplementedError('deleteStorageAsync');
+  }
+
   // Sync
   initSync<T extends StorageInterface>(setup: Setup<T>): Error | Ok {
     return this.notImplementedError('initSync');
@@ -109,5 +113,9 @@ export abstract class StorageInterface {
 
   keySync(index: number): string {
     throw this.notImplementedError('keySync');
+  }
+
+  deleteStorageSync(): void {
+    throw this.notImplementedError('deleteStorageSync');
   }
 }

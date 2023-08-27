@@ -17,6 +17,7 @@ import {
   getDefaultMethod,
   setDefaultMethod,
   clearDefaultMethod,
+  deleteStorageMethod,
 } from './const';
 
 export const asyncMethods = <T extends StorageInterface>(
@@ -85,6 +86,16 @@ export const asyncMethods = <T extends StorageInterface>(
               const [key] = await kv;
               return key !== undefined;
             }) as Array<Promise<[string, unknown]>>;
+        };
+      },
+    },
+
+    [deleteStorageMethod]: {
+      configurable: false,
+      get(): () => Promise<Error | Ok> {
+        return async () => {
+          const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
+          return storageInterface.deleteStorageAsync();
         };
       },
     },

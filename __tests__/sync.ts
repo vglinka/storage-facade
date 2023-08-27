@@ -101,6 +101,21 @@ it(`Sync: ref problem (need structuredClone)`, () => {
   }
 });
 
+it('Sync: delete storage', () => {
+  const storage = createStorage({
+    use: new MockInterface(),
+    name: 'settings',
+    asyncMode: false,
+  });
+
+  storage.value = { c: [40, 42] };
+
+  storage.delete();
+
+  expect(storage.isDeleted).toEqual(true);
+  expect(getMockStorage(storage).get('isDeleted')).toEqual(true);
+});
+
 it('Sync: addDefault', () => {
   const storage = createStorage({
     use: new MockInterface(),

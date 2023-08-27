@@ -17,6 +17,7 @@ import {
   type getDefaultMethod,
   type setDefaultMethod,
   type clearDefaultMethod,
+  type deleteStorageMethod,
 } from './const';
 
 export interface StorageFacade {
@@ -28,6 +29,7 @@ export interface StorageFacade {
   [keyMethod]: (index: number) => Promise<Error | string | undefined> | string;
   [iterAsyncMethod]: () => Promise<Array<Promise<[string, unknown]>>>;
   [iterSyncMethod]: () => Array<[string, unknown]>;
+  [deleteStorageMethod]: () => Promise<Error | Ok> | unknown;
   // '...Default' methods
   [addDefaultMethod]: (obj: Record<string, unknown>) => void;
   [getDefaultMethod]: () => Record<string, unknown>;

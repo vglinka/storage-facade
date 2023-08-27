@@ -24,6 +24,7 @@ Async methods
   - `clearAsync()`
   - `sizeAsync()`
   - `keyAsync(index: number)` - returns the name of the key by its index
+  - `deleteStorageAsync()`
 
 And/or Sync methods
 
@@ -34,6 +35,7 @@ And/or Sync methods
   - `clearSync()`
   - `sizeSync()`
   - `keySync(index: number)` - returns the name of the key by its index
+  - `deleteStorageSync()`
   
 Example: [MockInterface](https://github.com/vglinka/storage-facade/blob/main/examples/interface.ts)
 
@@ -74,6 +76,7 @@ npm install storage-facade storage-facade-mockinterface
 - `.clear()` - removes all key-value pairs from the storage
 - `.getEntries()` async only, returns an array of promises to iterate
 - `.entries()` sync only, returns an array of key-value pairs
+- `.delete()` - delete storage
 - `.size()` - returns the number of key-value pairs
 - `.key(index: number)` - returns the name of the key by its index
 
@@ -148,6 +151,9 @@ import { MockInterface } from 'storage-facade-mockinterface';
   // Clear storage
   await storage.clear();
   console.log(await storage.value); // undefined
+  
+  // Delete storage
+  await storage.delete();
 })();
 ```
 
@@ -177,7 +183,8 @@ try {
   const updatedValue = storage.value as Record<string, unknown>;
   // Make changes
   updatedValue.data = [10, 45];
-  storage.value = updatedValue; // Update storage, successfully written
+  // Update storage,
+  storage.value = updatedValue; // Ok
   console.log((storage.value as Record<string, unknown>).data); // [10, 45]
   
   delete storage.value;
@@ -188,6 +195,9 @@ try {
   
   storage.clear();
   console.log(storage.value); // undefined
+  
+  // Delete storage
+  storage.delete();
 } catch (e) {
   console.error((e as Error).message);
 }
@@ -437,8 +447,8 @@ async:
 ## Don't use banned key names
 
 There is a list of key names that cannot be used because they are the same
-as built-in method names: [`open`, `clear`, `size`, `key`, `getEntries`,
-`entries`, `addDefault`, `setDefault`, `getDefault`, `clearDefault`].
+as built-in method names: [`open`, `clear`, `delete`, `size`, `key`,
+`getEntries`, `entries`, `addDefault`, `setDefault`, `getDefault`, `clearDefault`].
 
 Use the `keyIsNotBanned` function to check the key if needed.
 

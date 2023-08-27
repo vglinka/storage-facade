@@ -53,10 +53,10 @@ export class MockInterface extends StorageInterface {
   // Async
   async initAsync<T extends StorageInterface>(setup: Setup<T>): Promise<Error | Ok> {
     return wait({
-      resolve: { data: new Ok() },
       action: () => {
         this.storageName = setup.name ?? defaultStorageName;
       },
+      resolve: { data: new Ok() },
     }) as Promise<Error | Ok>;
   }
 
@@ -68,28 +68,28 @@ export class MockInterface extends StorageInterface {
 
   async setItemAsync(key: string, value: unknown): Promise<Error | Ok> {
     return wait({
-      resolve: { data: new Ok() },
       action: () => {
         this.storage.set(key, structuredClone(value));
       },
+      resolve: { data: new Ok() },
     }) as Promise<Ok>;
   }
 
   async removeItemAsync(key: string): Promise<Error | Ok> {
     return wait({
-      resolve: { data: new Ok() },
       action: () => {
         this.storage.delete(key);
       },
+      resolve: { data: new Ok() },
     }) as Promise<Ok>;
   }
 
   async clearAsync(): Promise<Error | Ok> {
     return wait({
-      resolve: { data: new Ok() },
       action: () => {
         this.storage.clear();
       },
+      resolve: { data: new Ok() },
     }) as Promise<Ok>;
   }
 
@@ -103,6 +103,18 @@ export class MockInterface extends StorageInterface {
     return wait({
       resolve: { data: Array.from(this.storage)[index][0] },
     }) as Promise<string>;
+  }
+
+  async deleteStorageAsync(): Promise<Error | Ok> {
+    return wait({
+      action: () => {
+        // There should be logic for deleting real storage
+        this.storage.clear();
+        // for tests
+        this.storage.set('isDeleted', true);
+      },
+      resolve: { data: new Ok() },
+    }) as Promise<Ok>;
   }
 
   // Sync
@@ -133,6 +145,13 @@ export class MockInterface extends StorageInterface {
 
   keySync(index: number): string {
     return Array.from(this.storage)[index][0];
+  }
+
+  deleteStorageSync(): void {
+    // There should be logic for deleting real storage
+    this.storage.clear();
+    // for tests
+    this.storage.set('isDeleted', true);
   }
 }
 

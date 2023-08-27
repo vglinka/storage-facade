@@ -15,6 +15,7 @@ export const sizeMethod = 'size';
 export const keyMethod = 'key';
 export const iterAsyncMethod = 'getEntries';
 export const iterSyncMethod = 'entries';
+export const deleteStorageMethod = 'delete';
 
 // '...Default' method names
 export const addDefaultMethod = 'addDefault';
@@ -33,6 +34,7 @@ export const bannedKeys: Record<string, string> = {
   [setDefaultMethod]: setDefaultMethod,
   [getDefaultMethod]: getDefaultMethod,
   [clearDefaultMethod]: clearDefaultMethod,
+  [deleteStorageMethod]: deleteStorageMethod,
 };
 
 export const keyIsNotBanned = (key: string): boolean => {
