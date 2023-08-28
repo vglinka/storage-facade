@@ -67,11 +67,11 @@ export const asyncMethods = <T extends StorageInterface>(
 
     [iterAsyncMethod]: {
       configurable: false,
-      get(): () => Promise<Array<Promise<[string | undefined, unknown]>>> {
+      get(): () => Promise<Array<Promise<[string, unknown]>>> {
         return async () => {
           const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
           const size = await storageInterface.sizeAsync();
-          if (size === 0) return [] as Array<Promise<[string | undefined, unknown]>>;
+          if (size === 0) return [] as Array<Promise<[string, unknown]>>;
           return Array(size as number)
             .fill(undefined)
             .map(async (_, index) => {
