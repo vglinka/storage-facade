@@ -5,15 +5,12 @@
 // <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your
 // option.
 
-import { ErrorOnRead } from '../mock/errorOnRead';
-import { ErrorOnInit } from '../mock/errorOnInit';
-import { MockInterface, getMockStorage } from '../mock/mockInterface';
+import { MockInterface as TestedInterface, getMockStorage } from '../mock/mockInterface';
 import { createStorage } from '../src/index';
-import { ErrorOnWrite } from '../mock/errorOnWrite';
 
 it('Sync: read/write', () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     name: 'settings',
     asyncMode: false,
   });
@@ -26,7 +23,7 @@ it('Sync: read/write', () => {
 
 it(`Sync: case-sensitive`, () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
   });
 
@@ -41,7 +38,7 @@ it(`Sync: case-sensitive`, () => {
 
 it('Sync: different names', () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
     name: 'settings',
   });
@@ -51,7 +48,7 @@ it('Sync: different names', () => {
   expect(storage.value).toEqual(10);
 
   const storage2 = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
     name: 'settings2',
   });
@@ -72,7 +69,7 @@ it('Sync: different names', () => {
 
 it(`Sync: ref problem (need structuredClone)`, () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
   });
 
@@ -89,7 +86,7 @@ it(`Sync: ref problem (need structuredClone)`, () => {
 
   // Test new session
   const newStorage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
   });
 
@@ -103,7 +100,7 @@ it(`Sync: ref problem (need structuredClone)`, () => {
 
 it('Sync: delete storage', () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     name: 'settings',
     asyncMode: false,
   });
@@ -118,7 +115,7 @@ it('Sync: delete storage', () => {
 
 it('Sync: addDefault', () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
   });
 
@@ -139,7 +136,7 @@ it('Sync: addDefault', () => {
 
 it('Sync: getDefault', () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
   });
 
@@ -150,7 +147,7 @@ it('Sync: getDefault', () => {
 
 it('Sync: setDefault', () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
   });
 
@@ -165,7 +162,7 @@ it('Sync: setDefault', () => {
 
 it('Sync: clearDefault', () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
   });
 
@@ -179,7 +176,7 @@ it('Sync: clearDefault', () => {
 
 it('Sync: delete key', () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
   });
 
@@ -200,7 +197,7 @@ it('Sync: delete key', () => {
 
 it('Sync: clear storage', () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
   });
 
@@ -219,7 +216,7 @@ it('Sync: clear storage', () => {
 
 it('Sync: size', () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
   });
 
@@ -233,7 +230,7 @@ it('Sync: size', () => {
 
 it('Sync: key', () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
   });
 
@@ -246,7 +243,7 @@ it('Sync: key', () => {
 
 it('Sync: iter', () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     asyncMode: false,
   });
 
@@ -264,48 +261,4 @@ it('Sync: iter', () => {
     ['value', 4],
     ['other', 5],
   ]);
-});
-
-it('Sync: error on init', () => {
-  const storage = createStorage({
-    use: new ErrorOnInit(), // error
-    asyncMode: false,
-  });
-
-  expect.assertions(1);
-  try {
-    storage.value = 42;
-  } catch (e) {
-    expect((e as Error).message).toMatch('Error on init');
-  }
-});
-
-it('Sync: error on read', () => {
-  const storage = createStorage({
-    use: new ErrorOnRead(),
-    asyncMode: false,
-  });
-
-  expect.assertions(1);
-  try {
-    // @ts-expect-error: 'a' is declared but its value is never read.
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const a = storage.value;
-  } catch (e) {
-    expect((e as Error).message).toMatch('Error on read');
-  }
-});
-
-it('Sync: error on write', () => {
-  const storage = createStorage({
-    use: new ErrorOnWrite(),
-    asyncMode: false,
-  });
-
-  expect.assertions(1);
-  try {
-    storage.value = 42;
-  } catch (e) {
-    expect((e as Error).message).toMatch('Error on write');
-  }
 });

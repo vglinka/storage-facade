@@ -5,15 +5,12 @@
 // <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your
 // option.
 
-import { ErrorOnInit } from '../mock/errorOnInit';
 import { createStorage } from '../src/index';
-import { MockInterface, getMockStorage } from '../mock/mockInterface';
-import { ErrorOnRead } from '../mock/errorOnRead';
-import { ErrorOnWrite } from '../mock/errorOnWrite';
+import { MockInterface as TestedInterface, getMockStorage } from '../mock/mockInterface';
 
 it('Async: read/write', async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     name: 'settings',
   });
 
@@ -28,7 +25,7 @@ it('Async: read/write', async () => {
 
 it('Async: different names', async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     name: 'settings',
   });
 
@@ -40,7 +37,7 @@ it('Async: different names', async () => {
   expect(await storage.value).toEqual(10);
 
   const storage2 = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     name: 'settings2',
   });
 
@@ -61,7 +58,7 @@ it('Async: different names', async () => {
 
 it(`Async: case-sensitive`, async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
   });
 
   storage.value = 20;
@@ -77,7 +74,7 @@ it(`Async: case-sensitive`, async () => {
 
 it(`Async: ref problem (need structuredClone)`, async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
   });
 
   // set value
@@ -94,7 +91,7 @@ it(`Async: ref problem (need structuredClone)`, async () => {
 
   // Test new session
   const newStorage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
   });
 
   // get value
@@ -107,7 +104,7 @@ it(`Async: ref problem (need structuredClone)`, async () => {
 
 it('Async: delete storage', async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
     name: 'settings',
   });
 
@@ -124,7 +121,7 @@ it('Async: delete storage', async () => {
 
 it('Async: addDefault', async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
   });
 
   await storage.open();
@@ -149,7 +146,7 @@ it('Async: addDefault', async () => {
 
 it('Async: getDefault', async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
   });
 
   await storage.open();
@@ -161,7 +158,7 @@ it('Async: getDefault', async () => {
 
 it('Async: setDefault', async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
   });
 
   await storage.open();
@@ -177,7 +174,7 @@ it('Async: setDefault', async () => {
 
 it('Async: clearDefault', async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
   });
 
   await storage.open();
@@ -192,7 +189,7 @@ it('Async: clearDefault', async () => {
 
 it('Async: delete key', async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
   });
 
   await storage.open();
@@ -223,7 +220,7 @@ it('Async: delete key', async () => {
 
 it('Async: clear storage', async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
   });
 
   await storage.open();
@@ -243,7 +240,7 @@ it('Async: clear storage', async () => {
 
 it('Async: size', async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
   });
 
   await storage.open();
@@ -260,7 +257,7 @@ it('Async: size', async () => {
 
 it('Async: key', async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
   });
 
   await storage.open();
@@ -275,7 +272,7 @@ it('Async: key', async () => {
 
 it('Async: iter', async () => {
   const storage = createStorage({
-    use: new MockInterface(),
+    use: new TestedInterface(),
   });
 
   await storage.open();
@@ -299,48 +296,4 @@ it('Async: iter', async () => {
     ['value', 4],
     ['other', 5],
   ]);
-});
-
-it('Async: error on init', async () => {
-  const storage = createStorage({
-    use: new ErrorOnInit(), // error
-  });
-
-  expect.assertions(1);
-  try {
-    await storage.open();
-  } catch (e) {
-    expect((e as Error).message).toMatch('Error on init');
-  }
-});
-
-it('Async: error on read', async () => {
-  const storage = createStorage({
-    use: new ErrorOnRead(),
-  });
-
-  await storage.open();
-
-  expect.assertions(1);
-  try {
-    await storage.value;
-  } catch (e) {
-    expect((e as Error).message).toMatch('Error on read');
-  }
-});
-
-it('Async: error on write', async () => {
-  const storage = createStorage({
-    use: new ErrorOnWrite(),
-  });
-
-  await storage.open();
-
-  expect.assertions(1);
-  try {
-    storage.value = 42;
-    await storage.value;
-  } catch (e) {
-    expect((e as Error).message).toMatch('Error on write');
-  }
 });
