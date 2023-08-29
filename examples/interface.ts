@@ -89,8 +89,8 @@ export class MockInterface extends StorageInterface {
     return this.storage.size;
   }
 
-  keySync(index: number): string {
-    return Array.from(this.storage)[index][0];
+  keySync(index: number): string | undefined {
+    return Array.from(this.storage)[index]?.[0];
   }
 
   deleteStorageSync(): void {
@@ -153,7 +153,7 @@ export class MockInterface extends StorageInterface {
 
   async keyAsync(index: number): Promise<Error | string | undefined> {
     return wait({
-      resolve: { data: Array.from(this.storage)[index][0] },
+      resolve: { data: Array.from(this.storage)[index]?.[0] },
     }) as Promise<Error | string | undefined>;
   }
 
