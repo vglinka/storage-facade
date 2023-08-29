@@ -28,7 +28,13 @@ export const syncMethods = <T extends StorageInterface>(
       configurable: false,
       get(): () => void {
         return () => {
-          const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
+          const base = Object.getPrototypeOf(self) as Base<T>;
+          if (!base.initialized) {
+            if (base.init instanceof Error) throw base.init;
+            else base.initialized = true;
+          }
+
+          const { storageInterface } = base;
           storageInterface.clearSync();
         };
       },
@@ -36,9 +42,15 @@ export const syncMethods = <T extends StorageInterface>(
 
     [sizeMethod]: {
       configurable: false,
-      get(): () => number | never {
+      get(): () => number {
         return () => {
-          const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
+          const base = Object.getPrototypeOf(self) as Base<T>;
+          if (!base.initialized) {
+            if (base.init instanceof Error) throw base.init;
+            else base.initialized = true;
+          }
+
+          const { storageInterface } = base;
           return storageInterface.sizeSync();
         };
       },
@@ -46,9 +58,15 @@ export const syncMethods = <T extends StorageInterface>(
 
     [keyMethod]: {
       configurable: false,
-      get(): (index: number) => string | never {
+      get(): (index: number) => string | undefined {
         return (index: number) => {
-          const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
+          const base = Object.getPrototypeOf(self) as Base<T>;
+          if (!base.initialized) {
+            if (base.init instanceof Error) throw base.init;
+            else base.initialized = true;
+          }
+
+          const { storageInterface } = base;
           return storageInterface.keySync(index);
         };
       },
@@ -58,12 +76,18 @@ export const syncMethods = <T extends StorageInterface>(
       configurable: false,
       get(): () => Array<[string, unknown]> {
         return () => {
-          const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
+          const base = Object.getPrototypeOf(self) as Base<T>;
+          if (!base.initialized) {
+            if (base.init instanceof Error) throw base.init;
+            else base.initialized = true;
+          }
+
+          const { storageInterface } = base;
           const size = storageInterface.sizeSync();
           const result: Array<[string, unknown]> = [];
           if (size === 0) return result;
           let currentIndex = 0;
-          let key: string;
+          let key: string | undefined;
           let value;
           while (currentIndex < size) {
             key = storageInterface.keySync(currentIndex);
@@ -82,7 +106,13 @@ export const syncMethods = <T extends StorageInterface>(
       configurable: false,
       get(): () => void {
         return () => {
-          const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
+          const base = Object.getPrototypeOf(self) as Base<T>;
+          if (!base.initialized) {
+            if (base.init instanceof Error) throw base.init;
+            else base.initialized = true;
+          }
+
+          const { storageInterface } = base;
           storageInterface.deleteStorageSync();
         };
       },

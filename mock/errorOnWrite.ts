@@ -12,7 +12,7 @@
 */
 
 import { type Ok } from 'src/StorageInterface';
-import { MockInterface } from 'storage-facade-mockinterface';
+import { MockInterface } from './index';
 
 export class ErrorOnWrite extends MockInterface {
   async setItemAsync(key: string, value: unknown): Promise<Error | Ok> {

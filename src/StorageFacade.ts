@@ -5,9 +5,10 @@
 // <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your
 // option.
 
+/* eslint-disable prettier/prettier */
+
 import { type Ok } from './StorageInterface';
 import {
-  type openMethod,
   type clearMethod,
   type sizeMethod,
   type keyMethod,
@@ -23,10 +24,9 @@ import {
 export interface StorageFacade {
   [key: string]: unknown;
   // Storage methods
-  [openMethod]: () => Promise<Error | Ok>;
   [clearMethod]: () => Promise<Error | Ok> | unknown;
   [sizeMethod]: () => Promise<Error | number> | number;
-  [keyMethod]: (index: number) => Promise<Error | string | undefined> | string;
+  [keyMethod]: (index: number) => Promise<Error | string | undefined> | string | undefined;
   [iterAsyncMethod]: () => Promise<Array<Promise<[string, unknown]>>>;
   [iterSyncMethod]: () => Array<[string, unknown]>;
   [deleteStorageMethod]: () => Promise<Error | Ok> | unknown;

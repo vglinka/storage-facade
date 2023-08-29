@@ -11,7 +11,7 @@
     import/no-extraneous-dependencies,
 */
 
-import { MockInterface } from 'storage-facade-mockinterface';
+import { MockInterface } from './index';
 import { type StorageInterface, type Setup, type Ok } from '../src/StorageInterface';
 
 export class ErrorOnInit extends MockInterface {

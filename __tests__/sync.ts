@@ -7,9 +7,10 @@
 
 import {
   MockInterface as TestedInterface,
+  getBase,
   getMockStorage,
   // eslint-disable-next-line import/no-relative-packages
-} from 'storage-facade-mockinterface';
+} from '../mock/index';
 import { createStorage } from '../src/index';
 
 it('Sync: read/write', () => {
@@ -270,4 +271,98 @@ it('Sync: iter', () => {
     ['value', 4],
     ['other', 5],
   ]);
+});
+
+it(`Sync: initialized`, () => {
+  let base;
+
+  // Read
+  const storage = createStorage({
+    use: new TestedInterface(),
+    asyncMode: false,
+  });
+
+  base = getBase(storage);
+  expect(base.initialized).toEqual(false);
+
+  // @ts-expect-error: no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const a = storage.value;
+  expect(base.initialized).toEqual(true);
+
+  // Write
+  const storage2 = createStorage({
+    use: new TestedInterface(),
+    asyncMode: false,
+  });
+
+  base = getBase(storage2);
+  expect(base.initialized).toEqual(false);
+
+  storage2.value = 10;
+  expect(base.initialized).toEqual(true);
+
+  // Clear
+  const storage3 = createStorage({
+    use: new TestedInterface(),
+    asyncMode: false,
+  });
+
+  base = getBase(storage3);
+  expect(base.initialized).toEqual(false);
+
+  storage3.clear();
+  expect(base.initialized).toEqual(true);
+
+  // getEntries
+  const storage4 = createStorage({
+    use: new TestedInterface(),
+    asyncMode: false,
+  });
+
+  base = getBase(storage4);
+  expect(base.initialized).toEqual(false);
+
+  storage4.entries();
+  expect(base.initialized).toEqual(true);
+
+  // deleteStorage
+  const storage5 = createStorage({
+    use: new TestedInterface(),
+    asyncMode: false,
+  });
+
+  base = getBase(storage5);
+  expect(base.initialized).toEqual(false);
+
+  storage5.deleteStorage();
+  expect(base.initialized).toEqual(true);
+
+  // size
+  const storage6 = createStorage({
+    use: new TestedInterface(),
+    asyncMode: false,
+  });
+
+  base = getBase(storage6);
+  expect(base.initialized).toEqual(false);
+
+  // @ts-expect-error: no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const b = storage6.size();
+  expect(base.initialized).toEqual(true);
+
+  // key
+  const storage7 = createStorage({
+    use: new TestedInterface(),
+    asyncMode: false,
+  });
+
+  base = getBase(storage7);
+  expect(base.initialized).toEqual(false);
+
+  // @ts-expect-error: no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const c = storage7.key(0);
+  expect(base.initialized).toEqual(true);
 });

@@ -9,7 +9,6 @@ export const defaultStorageName = 'storage';
 export const defaultAsyncMode = true;
 
 // Storage method names
-export const openMethod = 'open';
 export const clearMethod = 'clear';
 export const sizeMethod = 'size';
 export const keyMethod = 'key';
@@ -24,7 +23,6 @@ export const getDefaultMethod = 'getDefault';
 export const clearDefaultMethod = 'clearDefault';
 
 export const bannedKeys: Record<string, string> = {
-  [openMethod]: openMethod,
   [clearMethod]: clearMethod,
   [sizeMethod]: sizeMethod,
   [keyMethod]: keyMethod,

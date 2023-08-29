@@ -11,7 +11,7 @@
     import/no-extraneous-dependencies,
 */
 
-import { MockInterface } from 'storage-facade-mockinterface';
+import { MockInterface } from './index';
 
 export class ErrorOnRead extends MockInterface {
   async getItemAsync(key: string): Promise<Error | unknown> {

@@ -8,7 +8,6 @@
 import { type Base } from './Base';
 import { type StorageInterface, type Ok } from './StorageInterface';
 import {
-  openMethod,
   clearMethod,
   sizeMethod,
   keyMethod,
@@ -25,16 +24,6 @@ export const asyncMethods = <T extends StorageInterface>(
 ): PropertyDescriptorMap & ThisType<unknown> => {
   return {
     // Storage
-    [openMethod]: {
-      configurable: false,
-      get(): () => Promise<Error | Ok> {
-        return async () => {
-          const base = Object.getPrototypeOf(self) as Base<T>;
-          return base.init as Promise<Error | Ok>;
-        };
-      },
-    },
-
     [clearMethod]: {
       configurable: false,
       get(): () => Promise<Error | Ok> {

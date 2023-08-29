@@ -111,7 +111,7 @@ export abstract class StorageInterface {
     throw this.notImplementedError('sizeSync');
   }
 
-  keySync(index: number): string {
+  keySync(index: number): string | undefined {
     throw this.notImplementedError('keySync');
   }
 

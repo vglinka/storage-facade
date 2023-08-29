@@ -38,6 +38,11 @@ export const syncInnerHandler: Record<string, unknown> = {
   },
 
   deleteProperty<T extends StorageInterface>(targetObj: Base<T>, propName: string) {
+    if (!targetObj.initialized) {
+      if (targetObj.init instanceof Error) throw targetObj.init;
+      else targetObj.initialized = true;
+    }
+
     targetObj.storageInterface.removeItemSync(propName);
     return true;
   },

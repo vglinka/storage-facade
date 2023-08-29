@@ -17,7 +17,7 @@ it('Async: error on init', async () => {
 
   expect.assertions(1);
   try {
-    await storage.open();
+    await storage.value;
   } catch (e) {
     expect((e as Error).message).toMatch('Error on init');
   }
@@ -27,8 +27,6 @@ it('Async: error on read', async () => {
   const storage = createStorage({
     use: new ErrorOnRead(),
   });
-
-  await storage.open();
 
   expect.assertions(1);
   try {
@@ -42,8 +40,6 @@ it('Async: error on write', async () => {
   const storage = createStorage({
     use: new ErrorOnWrite(),
   });
-
-  await storage.open();
 
   expect.assertions(1);
   try {

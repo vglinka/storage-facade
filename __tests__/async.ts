@@ -10,7 +10,7 @@ import {
   getBase,
   getMockStorage,
   // eslint-disable-next-line import/no-relative-packages
-} from 'storage-facade-mockinterface';
+} from '../mock/index';
 import { createStorage } from '../src/index';
 
 it('Async: read/write', async () => {
@@ -18,8 +18,6 @@ it('Async: read/write', async () => {
     use: new TestedInterface(),
     name: 'settings',
   });
-
-  await storage.open();
 
   storage.value = { c: [40, 42] };
   await storage.value;
@@ -33,8 +31,6 @@ it('Async: different names', async () => {
     use: new TestedInterface(),
     name: 'settings',
   });
-
-  await storage.open();
 
   storage.value = 10;
   await storage.value;
@@ -113,8 +109,6 @@ it('Async: delete storage', async () => {
     name: 'settings',
   });
 
-  await storage.open();
-
   storage.value = 42;
   await storage.value;
 
@@ -132,8 +126,6 @@ it('Async: addDefault', async () => {
   const storage = createStorage({
     use: new TestedInterface(),
   });
-
-  await storage.open();
 
   storage.addDefault({ value: 9 });
   storage.addDefault({ value: 1, value2: 2 });
@@ -158,8 +150,6 @@ it('Async: getDefault', async () => {
     use: new TestedInterface(),
   });
 
-  await storage.open();
-
   storage.addDefault({ value: 2, other: 7 });
 
   expect(storage.getDefault()).toEqual({ value: 2, other: 7 });
@@ -169,8 +159,6 @@ it('Async: setDefault', async () => {
   const storage = createStorage({
     use: new TestedInterface(),
   });
-
-  await storage.open();
 
   storage.addDefault({ value: 2, other: 7 });
 
@@ -186,8 +174,6 @@ it('Async: clearDefault', async () => {
     use: new TestedInterface(),
   });
 
-  await storage.open();
-
   storage.addDefault({ value: 2, other: 7 });
 
   storage.clearDefault();
@@ -200,8 +186,6 @@ it('Async: delete key', async () => {
   const storage = createStorage({
     use: new TestedInterface(),
   });
-
-  await storage.open();
 
   storage.addDefault({ value: 2 });
 
@@ -232,8 +216,6 @@ it('Async: clear storage', async () => {
     use: new TestedInterface(),
   });
 
-  await storage.open();
-
   storage.addDefault({ value: 2 });
   storage.value = 4;
   await storage.value;
@@ -252,8 +234,6 @@ it('Async: size', async () => {
     use: new TestedInterface(),
   });
 
-  await storage.open();
-
   storage.addDefault({ value: 2 });
   storage.value = 4;
   await storage.value;
@@ -269,8 +249,6 @@ it('Async: key', async () => {
     use: new TestedInterface(),
   });
 
-  await storage.open();
-
   storage.addDefault({ value: 2 });
   storage.value = 4;
   await storage.value;
@@ -283,8 +261,6 @@ it('Async: iter', async () => {
   const storage = createStorage({
     use: new TestedInterface(),
   });
-
-  await storage.open();
 
   storage.addDefault({ value: 2 });
 
@@ -307,7 +283,7 @@ it('Async: iter', async () => {
   ]);
 });
 
-it(`Async: no '.open()'`, async () => {
+it(`Async: initialized`, async () => {
   let base;
 
   // Read
