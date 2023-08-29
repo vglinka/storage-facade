@@ -6,7 +6,11 @@
 // option.
 
 import { createStorage } from '../src/index';
-import { MockInterface as TestedInterface, getMockStorage } from '../mock/mockInterface';
+import {
+  MockInterface as TestedInterface,
+  getBase,
+  getMockStorage,
+} from '../mock/mockInterface';
 
 it('Async: read/write', async () => {
   const storage = createStorage({
@@ -296,4 +300,86 @@ it('Async: iter', async () => {
     ['value', 4],
     ['other', 5],
   ]);
+});
+
+it(`Async: no '.open()'`, async () => {
+  let base;
+
+  // Read
+  const storage = createStorage({
+    use: new TestedInterface(),
+  });
+
+  base = getBase(storage);
+  expect(base.initialized).toEqual(false);
+
+  await storage.value;
+  expect(base.initialized).toEqual(true);
+
+  // Write
+  const storage2 = createStorage({
+    use: new TestedInterface(),
+  });
+
+  base = getBase(storage2);
+  expect(base.initialized).toEqual(false);
+
+  storage2.value = 10;
+  await storage2.value;
+  expect(base.initialized).toEqual(true);
+
+  // Clear
+  const storage3 = createStorage({
+    use: new TestedInterface(),
+  });
+
+  base = getBase(storage3);
+  expect(base.initialized).toEqual(false);
+
+  await storage3.clear();
+  expect(base.initialized).toEqual(true);
+
+  // getEntries
+  const storage4 = createStorage({
+    use: new TestedInterface(),
+  });
+
+  base = getBase(storage4);
+  expect(base.initialized).toEqual(false);
+
+  await storage4.getEntries();
+  expect(base.initialized).toEqual(true);
+
+  // deleteStorage
+  const storage5 = createStorage({
+    use: new TestedInterface(),
+  });
+
+  base = getBase(storage5);
+  expect(base.initialized).toEqual(false);
+
+  await storage5.deleteStorage();
+  expect(base.initialized).toEqual(true);
+
+  // size
+  const storage6 = createStorage({
+    use: new TestedInterface(),
+  });
+
+  base = getBase(storage6);
+  expect(base.initialized).toEqual(false);
+
+  await storage6.size();
+  expect(base.initialized).toEqual(true);
+
+  // key
+  const storage7 = createStorage({
+    use: new TestedInterface(),
+  });
+
+  base = getBase(storage7);
+  expect(base.initialized).toEqual(false);
+
+  await storage7.key(0);
+  expect(base.initialized).toEqual(true);
 });

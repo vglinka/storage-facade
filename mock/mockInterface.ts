@@ -101,7 +101,7 @@ export class MockInterface extends StorageInterface {
 
   async keyAsync(index: number): Promise<Error | string | undefined> {
     return wait({
-      resolve: { data: Array.from(this.storage)[index][0] },
+      resolve: { data: Array.from(this.storage)[index]?.[0] },
     }) as Promise<string>;
   }
 
@@ -161,4 +161,11 @@ export const getMockStorage = (storage: StorageFacade): Map<string, unknown> => 
     Object.getPrototypeOf(storage)
   ) as Base<MockInterface>;
   return base.storageInterface.storage;
+};
+
+export const getBase = (storage: StorageFacade): Base<MockInterface> => {
+  const base = Object.getPrototypeOf(
+    Object.getPrototypeOf(storage)
+  ) as Base<MockInterface>;
+  return base;
 };

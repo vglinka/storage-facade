@@ -39,7 +39,12 @@ export const asyncMethods = <T extends StorageInterface>(
       configurable: false,
       get(): () => Promise<Error | Ok> {
         return async () => {
-          const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
+          const base = Object.getPrototypeOf(self) as Base<T>;
+          if (!base.initialized) {
+            await base.init;
+            base.initialized = true;
+          }
+          const { storageInterface } = base;
           return storageInterface.clearAsync();
         };
       },
@@ -49,7 +54,12 @@ export const asyncMethods = <T extends StorageInterface>(
       configurable: false,
       get(): () => Promise<Error | number> {
         return async () => {
-          const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
+          const base = Object.getPrototypeOf(self) as Base<T>;
+          if (!base.initialized) {
+            await base.init;
+            base.initialized = true;
+          }
+          const { storageInterface } = base;
           return storageInterface.sizeAsync();
         };
       },
@@ -59,7 +69,12 @@ export const asyncMethods = <T extends StorageInterface>(
       configurable: false,
       get(): (index: number) => Promise<Error | string | undefined> {
         return async (index: number) => {
-          const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
+          const base = Object.getPrototypeOf(self) as Base<T>;
+          if (!base.initialized) {
+            await base.init;
+            base.initialized = true;
+          }
+          const { storageInterface } = base;
           return storageInterface.keyAsync(index);
         };
       },
@@ -69,7 +84,12 @@ export const asyncMethods = <T extends StorageInterface>(
       configurable: false,
       get(): () => Promise<Array<Promise<[string, unknown]>>> {
         return async () => {
-          const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
+          const base = Object.getPrototypeOf(self) as Base<T>;
+          if (!base.initialized) {
+            await base.init;
+            base.initialized = true;
+          }
+          const { storageInterface } = base;
           const size = await storageInterface.sizeAsync();
           if (size === 0) return [] as Array<Promise<[string, unknown]>>;
           return Array(size as number)
@@ -94,7 +114,12 @@ export const asyncMethods = <T extends StorageInterface>(
       configurable: false,
       get(): () => Promise<Error | Ok> {
         return async () => {
-          const { storageInterface } = Object.getPrototypeOf(self) as Base<T>;
+          const base = Object.getPrototypeOf(self) as Base<T>;
+          if (!base.initialized) {
+            await base.init;
+            base.initialized = true;
+          }
+          const { storageInterface } = base;
           return storageInterface.deleteStorageAsync();
         };
       },

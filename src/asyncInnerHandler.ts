@@ -53,7 +53,12 @@ export const asyncInnerHandler: Record<string, unknown> = {
     return value;
   },
 
-  deleteProperty<T extends StorageInterface>(targetObj: Base<T>, propName: string) {
+  async deleteProperty<T extends StorageInterface>(targetObj: Base<T>, propName: string) {
+    if (!targetObj.initialized) {
+      await targetObj.init;
+      targetObj.initialized = true;
+    }
+
     const promise = targetObj.storageInterface.removeItemAsync(propName);
     targetObj.operationResults.set(propName, promise);
     return true;
