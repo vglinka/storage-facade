@@ -1,7 +1,7 @@
 {
   "name": "storage-facade",
-  "version": "4.0.4",
-  "description": "An simple way to store data in localStorage / IndexedDB / ...",
+  "version": "4.0.5",
+  "description": "An simple way to store data in IndexedDB / localStorage / sessionStorage",
   "author": "Vadim Glinka <vadgit@yandex.com>",
   "license": "(MIT OR Apache-2.0)",
   "repository": {

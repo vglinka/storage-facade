@@ -46,6 +46,10 @@ In addition, iteration over entries is available.
 
 ## Libraries using the Storage facade
 
+### IndexedDB
+
+- [storage-facade-indexeddb](https://www.npmjs.com/package/storage-facade-indexeddb) - An simple way to store data in IndexedDB.
+
 ### localStorage
 
 - [storage-facade-localstorage](https://www.npmjs.com/package/storage-facade-localstorage) - An simple way to store data in localStorage. Supports caching.
