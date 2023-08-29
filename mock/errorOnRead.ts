@@ -7,14 +7,15 @@
 
 /* eslint-disable
     class-methods-use-this,
-    @typescript-eslint/no-unused-vars
+    @typescript-eslint/no-unused-vars,
+    import/no-extraneous-dependencies,
 */
 
-import { MockInterface, wait } from './mockInterface';
+import { MockInterface } from 'storage-facade-mockinterface';
 
 export class ErrorOnRead extends MockInterface {
   async getItemAsync(key: string): Promise<Error | unknown> {
-    return wait({
+    return this.wait({
       reject: { data: Error('Error on read') },
     }) as Promise<Error | undefined>;
   }

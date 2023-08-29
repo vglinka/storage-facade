@@ -7,10 +7,11 @@
 
 /* eslint-disable
     class-methods-use-this,
-    @typescript-eslint/no-unused-vars
+    @typescript-eslint/no-unused-vars,
+    import/no-extraneous-dependencies,
 */
 
-import { MockInterface, wait } from './mockInterface';
+import { MockInterface } from 'storage-facade-mockinterface';
 import { type StorageInterface, type Setup, type Ok } from '../src/StorageInterface';
 
 export class ErrorOnInit extends MockInterface {
@@ -19,7 +20,7 @@ export class ErrorOnInit extends MockInterface {
   }
 
   async initAsync<T extends StorageInterface>(setup: Setup<T>): Promise<Error | Ok> {
-    return wait({
+    return this.wait({
       reject: { data: Error('Error on init') },
     }) as Promise<Error | Ok>;
   }

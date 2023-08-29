@@ -7,15 +7,16 @@
 
 /* eslint-disable
     class-methods-use-this,
-    @typescript-eslint/no-unused-vars
+    @typescript-eslint/no-unused-vars,
+    import/no-extraneous-dependencies,
 */
 
 import { type Ok } from 'src/StorageInterface';
-import { MockInterface, wait } from './mockInterface';
+import { MockInterface } from 'storage-facade-mockinterface';
 
 export class ErrorOnWrite extends MockInterface {
   async setItemAsync(key: string, value: unknown): Promise<Error | Ok> {
-    return wait({
+    return this.wait({
       reject: { data: Error('Error on write') },
     }) as Promise<Error | Ok>;
   }

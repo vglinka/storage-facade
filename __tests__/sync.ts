@@ -5,7 +5,11 @@
 // <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your
 // option.
 
-import { MockInterface as TestedInterface, getMockStorage } from '../mock/mockInterface';
+import {
+  MockInterface as TestedInterface,
+  getMockStorage,
+  // eslint-disable-next-line import/no-relative-packages
+} from 'storage-facade-mockinterface';
 import { createStorage } from '../src/index';
 
 it('Sync: read/write', () => {
@@ -105,12 +109,17 @@ it('Sync: delete storage', () => {
     asyncMode: false,
   });
 
-  storage.value = { c: [40, 42] };
+  storage.value = 42;
 
   storage.deleteStorage();
 
-  expect(storage.isDeleted).toEqual(true);
-  expect(getMockStorage(storage).get('isDeleted')).toEqual(true);
+  expect.assertions(1);
+  try {
+    // eslint-disable-next-line no-console
+    console.log(storage.value);
+  } catch (e) {
+    expect((e as Error).message).toMatch('This Storage was deleted!');
+  }
 });
 
 it('Sync: addDefault', () => {
