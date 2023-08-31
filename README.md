@@ -3,7 +3,7 @@
 A TypeScript library providing a lightweight storage facade.
 
 A storage facade provides a single storage API that abstracts
-over the actual storage implementation. 
+over the actual storage implementation.
 
 Library users can write an implementation of the synchronous
 and/or asynchronous storage interface (localStorage / IndexedDB / ...)
@@ -36,7 +36,7 @@ And/or Sync methods
   - `sizeSync()`
   - `keySync(index: number)` - returns the name of the key by its index
   - `deleteStorageSync()`
-  
+
 Example: [MockInterface](https://github.com/vglinka/storage-facade/blob/main/examples/interface.ts)
 
 Implementing these methods will allow you to save and load values
@@ -52,15 +52,20 @@ In addition, iteration over entries is available.
 
 ### localStorage
 
-- [storage-facade-localstorage](https://www.npmjs.com/package/storage-facade-localstorage) - An simple way to store data in localStorage. Supports caching.
+- [storage-facade-localstorage](https://www.npmjs.com/package/storage-facade-localstorage) - If you need virtual storages inside `localStorage` that can be cleared without affecting other data stored in `localStorage`. Supports caching.
+
+- [storage-facade-localstoragethin](https://www.npmjs.com/package/storage-facade-localstoragethin) - Just delegation to `localStorage`. Supports caching.
 
 ### sessionStorage
 
-- [storage-facade-sessionstorage](https://www.npmjs.com/package/storage-facade-sessionstorage) - An simple way to store data in sessionStorage. Supports caching.
+- [storage-facade-sessionstorage](https://www.npmjs.com/package/storage-facade-sessionstorage) - If you need virtual storages inside `sessionStorage` that can be cleared without affecting other data stored in `sessionStorage`. Supports caching.
+
+
+- [storage-facade-sessionstoragethin](https://www.npmjs.com/package/storage-facade-sessionstoragethin) - Just delegation to `sessionStorage`. Supports caching.
 
 ### MockInterface
 
-- [storage-facade-mockinterface](https://www.npmjs.com/package/storage-facade-mockinterface) - MockInterface for Storage facade.
+- [storage-facade-mockinterface](https://www.npmjs.com/package/storage-facade-mockinterface) - MockInterface for Storage facade. Allows you to set a random delay in the interval for asynchronous operations. Used for testing.
 
 ### MapInterface
 
@@ -119,10 +124,10 @@ import { MockInterface } from 'storage-facade-mockinterface';
   storage.value = { data: [40, 42] };
   // After the assignment, wait for the write operation to complete
   await storage.value; // Successfully written
-  
+
   // Read value
   console.log(await storage.value); // { data: [40, 42] }
-  
+
   // When writing, accesses to first-level keys are intercepted only,
   // so if you need to make changes inside the object,
   // you need to make changes and then assign it to the first level key.
@@ -138,33 +143,33 @@ import { MockInterface } from 'storage-facade-mockinterface';
   console.log(
     ((await storage.value) as Record<string, unknown>).data
   ); // [10, 45]
-  
+
   // OR
   const value = (await storage.value) as Record<string, unknown>;
   console.log(value.data); // [10, 45]
-  
+
   // Delete value
   delete storage.value;
   await storage.value; // Successfully deleted
-  
+
   console.log(await storage.value); // undefined
-  
+
   storage.value = 30;
   await storage.value;
-  
+
   console.log(await storage.value); // 30
-  
+
   // Clear storage
   await storage.clear();
   console.log(await storage.value); // undefined
-  
+
   // Delete storage
   await storage.deleteStorage();
 })();
 ```
 
 ### Sync read/write/delete
-  
+
 ```TypeScript
 import { createStorage } from 'storage-facade';
 import { MockInterface } from 'storage-facade-mockinterface';
@@ -183,7 +188,7 @@ const storage = createStorage({
 try {
   storage.value = { data: [40, 42] };
   console.log(storage.value); // { data: [40, 42] }
-  
+
   // When writing, accesses to first-level keys are intercepted only,
   // so if you need to make changes inside the object,
   // you need to make changes and then assign it to the first level key.
@@ -194,16 +199,16 @@ try {
   // Update storage,
   storage.value = updatedValue; // Ok
   console.log((storage.value as Record<string, unknown>).data); // [10, 45]
-  
+
   delete storage.value;
   console.log(storage.value); // undefined
-  
+
   storage.value = 30;
   console.log(storage.value); // 30
-  
+
   storage.clear();
   console.log(storage.value); // undefined
-  
+
   // Delete storage
   storage.deleteStorage();
 } catch (e) {
@@ -295,10 +300,10 @@ import { MockInterface } from 'storage-facade-mockinterface';
 
   storage.addDefault({ value: 9, other: 3 });
   storage.addDefault({ value: 1, value2: 2 });
-  
+
   // Since `storage.value = undefined` the default value is used
   console.log(await storage.value);  // 1
-  
+
   console.log(await storage.value2); // 2
   console.log(await storage.other);  // 3
 
@@ -315,23 +320,23 @@ import { MockInterface } from 'storage-facade-mockinterface';
   storage.value = null;
   await storage.value;
   console.log(await storage.value); // null
-  
+
   delete storage.value;
   await storage.value;
   console.log(await storage.value); // 1
-  
+
   // getDefault
   console.log(storage.getDefault()); // { value: 1, value2: 2, other: 3 }
-  
+
   // Replace 'default'
   storage.setDefault({ value: 30 });
 
   console.log(await storage.value); // 30
   console.log(await storage.value2); // undefined
-  
+
   // clearDefault
   storage.clearDefault();
-  
+
   console.log(await storage.value); // undefined
   console.log(await storage.value2); // undefined
 })();
@@ -353,10 +358,10 @@ try {
 
   storage.addDefault({ value: 9, other: 3 });
   storage.addDefault({ value: 1, value2: 2 });
-  
+
   // Since `storage.value = undefined` the default value is used
   console.log(storage.value);  // 1
-  
+
   console.log(storage.value2); // 2
   console.log(storage.other);  // 3
 
@@ -370,22 +375,22 @@ try {
 
   storage.value = null;
   console.log(storage.value); // null
-  
+
   delete storage.value;
   console.log(storage.value); // 1
-  
+
   // getDefault
   console.log(storage.getDefault()); // { value: 1, value2: 2, other: 3 }
-  
+
   // Replace 'default'
   storage.setDefault({ value: 30 });
 
   console.log(storage.value); // 30
   console.log(storage.value2); // undefined
-  
+
   // clearDefault
   storage.clearDefault();
-  
+
   console.log(storage.value); // undefined
   console.log(storage.value2); // undefined
 } catch (e) {
@@ -444,7 +449,7 @@ async:
   // Make changes
   updatedValue.data = 42;
   // Update storage
-  storage.value = updatedValue; 
+  storage.value = updatedValue;
   await storage.value // Ок
 ```
 
@@ -482,7 +487,7 @@ Only values of type `string` can be used as keys.
 ## Values for `...Default` methods
 
 Values for [`addDefault`, `setDefault`] methods
-should be of any [structured-cloneable type (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm#supported_types). 
+should be of any [structured-cloneable type (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm#supported_types).
 
 
 

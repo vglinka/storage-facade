@@ -13,6 +13,7 @@ import { ErrorOnWrite } from '../mock/errorOnWrite';
 it('Async: error on init', async () => {
   const storage = createStorage({
     use: new ErrorOnInit(), // error
+    asyncMode: true,
   });
 
   expect.assertions(1);
@@ -26,6 +27,7 @@ it('Async: error on init', async () => {
 it('Async: error on read', async () => {
   const storage = createStorage({
     use: new ErrorOnRead(),
+    asyncMode: true,
   });
 
   expect.assertions(1);
@@ -39,6 +41,7 @@ it('Async: error on read', async () => {
 it('Async: error on write', async () => {
   const storage = createStorage({
     use: new ErrorOnWrite(),
+    asyncMode: true,
   });
 
   expect.assertions(1);

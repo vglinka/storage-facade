@@ -13,6 +13,25 @@ import {
 } from '../mock/index';
 import { createStorage } from '../src/index';
 
+it(`Sync: need cleaning before each test (start)`, () => {
+  const storage = createStorage({
+    use: new TestedInterface(),
+    asyncMode: false,
+  });
+
+  storage.value = 'data from the previous test';
+  expect(storage.value).toEqual('data from the previous test');
+});
+
+it(`Sync: need cleaning before each test (end)`, () => {
+  const storage = createStorage({
+    use: new TestedInterface(),
+    asyncMode: false,
+  });
+
+  expect(storage.value).toEqual(undefined);
+});
+
 it('Sync: read/write', () => {
   const storage = createStorage({
     use: new TestedInterface(),
@@ -121,6 +140,19 @@ it('Sync: delete storage', () => {
   } catch (e) {
     expect((e as Error).message).toMatch('This Storage was deleted!');
   }
+});
+
+it(`Sync: null and undefined`, () => {
+  const storage = createStorage({
+    use: new TestedInterface(),
+    asyncMode: false,
+  });
+
+  storage.value = undefined;
+  expect(storage.value).toEqual(undefined);
+
+  storage.value = null;
+  expect(storage.value).toEqual(null);
 });
 
 it('Sync: addDefault', () => {
@@ -270,6 +302,44 @@ it('Sync: iter', () => {
   expect(array).toEqual([
     ['value', 4],
     ['other', 5],
+  ]);
+});
+
+it(`Sync: delete key + iteration`, () => {
+  const storage = createStorage({
+    use: new TestedInterface(),
+    asyncMode: false,
+  });
+
+  storage.value = 60;
+  storage.value2 = 50;
+  storage.value3 = 40;
+  storage.value4 = 30;
+
+  delete storage.value;
+  delete storage.value3;
+
+  expect(storage.value).toEqual(undefined);
+  expect(storage.value2).toEqual(50);
+  expect(storage.value3).toEqual(undefined);
+  expect(storage.value4).toEqual(30);
+
+  storage.value5 = 20;
+  storage.value = 1;
+  storage.value6 = 10;
+  storage.value8 = 0;
+  storage.value7 = 0;
+
+  const array = storage.entries();
+
+  expect(array).toEqual([
+    ['value2', 50],
+    ['value4', 30],
+    ['value5', 20],
+    ['value', 1],
+    ['value6', 10],
+    ['value8', 0],
+    ['value7', 0],
   ]);
 });
 
